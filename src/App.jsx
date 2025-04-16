@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from "react";
+import { Routes, Route } from "react-router";
+import Home from "./pages/Home";
+import Navbar from "./parts/Navbar";
+import Footer from "./parts/Footer";
+import Muscles from "./pages/Muscles";
+import Contact from "./pages/Contact";
+import MuscleDetail from "./pages/MuscleDetail";
+import "./index.css";
+import { useData } from "./parts/Memory";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { musclesData } = useData();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="" element={<Home />} />
+        <Route path="/muscles" element={<Muscles />} />
+        <Route path="/contact" element={<Contact />} />
+        {musclesData.map((muscleData, i) => (
+          <Route
+            id={i}
+            path={`/Muscle-${muscleData.name}`}
+            element={<MuscleDetail data={muscleData} />}
+          />
+        ))}
+      </Routes>
+      <Footer />
+    </div>
+  );
 }
-
-export default App
